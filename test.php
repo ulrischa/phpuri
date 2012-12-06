@@ -72,7 +72,7 @@ foreach($tests as $test){
 $elapsed = microtime() - $start;
 echo "url_to_absolute: successes -> $successes, failures => $failures, elapsed time: $elapsed\n";
 
-# php_uri
+# phpuri
 $start = microtime();
 $base = URI::parse('http://a/b/c/d;p?q');
 list($successes, $failures) = array(0,0);
@@ -85,5 +85,5 @@ foreach($tests as $test){
   }
 }
 $elapsed = microtime() - $start;
-echo "php_uri:         successes -> $successes, failures => $failures, elapsed time: $elapsed\n";
+echo "phpuri:          successes -> $successes, failures => $failures, elapsed time: $elapsed\n";
 ?>
