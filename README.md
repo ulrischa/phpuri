@@ -5,7 +5,7 @@ A php library for converting relative urls to absolute.
 
 ```php
 require 'phpuri.php';
-echo URI::parse('https://www.google.com/')->join('foo');
+echo phpUri::parse('https://www.google.com/')->join('foo');
 //==> https://www.google.com/foo
 ```
 

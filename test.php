@@ -1,7 +1,7 @@
 <?php
 
-require('rel2abs.php');
-require('url_to_absolute.php');
+require('../rel2abs.php');
+require('../url_to_absolute.php');
 require('phpuri.php');
 
 $tests=array(
@@ -74,7 +74,7 @@ echo "url_to_absolute: successes -> $successes, failures => $failures, elapsed t
 
 # phpuri
 $start = microtime();
-$base = URI::parse('http://a/b/c/d;p?q');
+$base = phpUri::parse('http://a/b/c/d;p?q');
 list($successes, $failures) = array(0,0);
 foreach($tests as $test){
   if(($r = $base->join($test['rel'])) == $test['result']){
