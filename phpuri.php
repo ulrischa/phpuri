@@ -1,8 +1,56 @@
 <?php
-class phpUri{
-  var $scheme, $authority, $path, $query, $fragment;
+/**
+ * A php library for converting relative urls to absolute.
+ * Website: https://github.com/monkeysuffrage/phpuri
+ *
+ * <pre>
+ * echo phpUri::parse('https://www.google.com/')->join('foo');
+ * //==> https://www.google.com/foo
+ * </pre>
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @author P Guardiario <pguardiario@gmail.com>
+ * @version 1.0
+ */
 
-  function __construct($string){
+/**
+ * phpUri
+ */
+ class phpUri{
+
+  /**
+   * http(s)://
+   * @var string
+   */
+  public $scheme;
+
+  /**
+   * www.example.com
+   * @var string
+   */
+  public $authority;
+
+  /**
+   * /search
+   * @var string
+   */
+  public $path;
+
+  /**
+   * ?q=foo
+   * @var string
+   */
+  public $query;
+
+  /**
+   * #bar
+   * @var string
+   */
+  public $fragment;
+
+  private function __construct($string){
     preg_match_all('/^(([^:\/?#]+):)?(\/\/([^\/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?$/', $string ,$m);
     $this->scheme = $m[2][0];
     $this->authority = $m[4][0];
@@ -11,13 +59,44 @@ class phpUri{
     $this->fragment = $m[9][0];
   }
 
-  public static function parse($string){
-    $uri = new phpUri($string);
+  private function to_str(){
+    $ret = "";
+    if(!empty($this->scheme)) $ret .= "$this->scheme:";
+    if(!empty($this->authority)) $ret .= "//$this->authority";
+    $ret .= $this->normalize_path($this->path);
+    if(!empty($this->query)) $ret .= "?$this->query";
+    if(!empty($this->fragment)) $ret .= "#$this->fragment";
+    return $ret;
+  }
+
+  private function normalize_path($path){
+    if(empty($path)) return '';
+    $normalized_path = $path;
+    $normalized_path = preg_replace('`//+`', '/' , $normalized_path, -1, $c0);
+    $normalized_path = preg_replace('`^/\\.\\.?/`', '/' , $normalized_path, -1, $c1);
+    $normalized_path = preg_replace('`/\\.(/|$)`', '/' , $normalized_path, -1, $c2);
+    $normalized_path = preg_replace('`/[^/]*?/\\.\\.(/|$)`', '/' , $normalized_path, -1, $c3);
+    $num_matches = $c0 + $c1 + $c2 + $c3;
+    return ($num_matches > 0) ? $this->normalize_path($normalized_path) : $normalized_path;
+  }
+
+  /**
+   * Parse an url string
+   * @param string $url the url to parse
+   * @return phpUri
+   */
+  public static function parse($url){
+    $uri = new phpUri($url);
     return $uri;
   }
 
-  function join($string){
-    $uri = new phpUri($string);
+  /**
+   * Join with a relative url
+   * @param string $relative the relative url to join
+   * @return string
+   */
+  public function join($relative){
+    $uri = new phpUri($relative);
     switch(true){
       case !empty($uri->scheme): break;
       case !empty($uri->authority): break;
@@ -40,27 +119,6 @@ class phpUri{
       if(empty($uri->authority)) $uri->authority = $this->authority;
     }
     return $uri->to_str();
-  }
-
-  function normalize_path($path){
-    if(empty($path)) return '';
-    $normalized_path = $path;
-    $normalized_path = preg_replace('`//+`', '/' , $normalized_path, -1, $c0);
-    $normalized_path = preg_replace('`^/\\.\\.?/`', '/' , $normalized_path, -1, $c1);
-    $normalized_path = preg_replace('`/\\.(/|$)`', '/' , $normalized_path, -1, $c2);
-    $normalized_path = preg_replace('`/[^/]*?/\\.\\.(/|$)`', '/' , $normalized_path, -1, $c3);
-    $num_matches = $c0 + $c1 + $c2 + $c3;
-    return ($num_matches > 0) ? $this->normalize_path($normalized_path) : $normalized_path;
-  }
-
-  function to_str(){
-    $ret = "";
-    if(!empty($this->scheme)) $ret .= "$this->scheme:";
-    if(!empty($this->authority)) $ret .= "//$this->authority";
-    $ret .= $this->normalize_path($this->path);
-    if(!empty($this->query)) $ret .= "?$this->query";
-    if(!empty($this->fragment)) $ret .= "#$this->fragment";
-    return $ret;
   }
 }
 ?>
