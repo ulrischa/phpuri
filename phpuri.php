@@ -54,7 +54,7 @@
     preg_match_all('/^(([^:\/?#]+):)?(\/\/([^\/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?$/', $string ,$m);
     $this->scheme = $m[2][0];
     $this->authority = $m[4][0];
-    $this->path = $m[5][0];
+    $this->path = (empty($m[5][0]))?'/':$m[5][0];
     $this->query = $m[7][0];
     $this->fragment = $m[9][0];
   }
