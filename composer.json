@@ -1,7 +1,9 @@
 {
     "name": "pguardiario/phpuri",
     "description": "Description of project phpuri.",
-	"files": [
-		"vendor/pguardiario/phpuri/phpuri.php"
-	]
+	"autoload" : {
+		"files": [
+			"phpuri.php"
+		]
+	}
 }
