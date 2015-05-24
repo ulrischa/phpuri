@@ -134,6 +134,17 @@
 		{
 			$uri = new phpUri( $url );
 
+			/**
+			 * CHANGE:
+			 * @author Dominik Habichtsberg <Dominik.Habichtsberg@Hbg-IT.de>
+			 * @since  24 Mai 2015 10:25 Uhr
+			 * The base-url should always have a path
+			 */
+			if ( empty( $uri->path ) )
+			{
+				$uri->path = '/';
+			}
+
 			return $uri;
 		}
 
