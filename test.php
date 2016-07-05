@@ -1,5 +1,21 @@
 <?php
 
+  /**
+   * A php library for converting relative urls to absolute.
+   * Website: https://github.com/monkeysuffrage/phpuri
+   *
+   * <pre>
+   * echo phpUri::parse('https://www.google.com/')->join('foo');
+   * //==> https://www.google.com/foo
+   * </pre>
+   *
+   * Licensed under The MIT License
+   * Redistributions of files must retain the above copyright notice.
+   *
+   * @author  P Guardiario <pguardiario@gmail.com>
+   * @version 1.0
+   */
+
 require('../rel2abs.php');
 require('../url_to_absolute.php');
 require('phpuri.php');
