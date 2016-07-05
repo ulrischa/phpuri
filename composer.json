@@ -1,7 +1,7 @@
 {
     "name": "pguardiario/phpuri",
 	"type": "project",
-	"version": "1.0",
+	"license": "MIT",
     "description": "A php library for converting relative urls to absolute.",
 	"autoload" : {
 		"files": [
