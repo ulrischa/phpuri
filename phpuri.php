@@ -67,6 +67,16 @@
 			 * With the former code, the relative urls //g and #s failed
 			 */
 			$this->path     = $m[ 5 ][ 0 ];
+			/**
+			* CHANGE:
+			* @author ulrischa
+			* Sanitize trailing slash problem
+			**/
+			//Is not file?
+			$re = '`/([^/.]+)$`m';
+			$subst = '/$1/';
+			$this->path = preg_replace($re, $subst, $this->path);
+
 			$this->query    = $m[ 7 ][ 0 ];
 			$this->fragment = $m[ 9 ][ 0 ];
 		}
